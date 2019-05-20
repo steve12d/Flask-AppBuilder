@@ -24,12 +24,12 @@ def desc():
 setup(
     name='Flask-AppBuilder',
     version=version,
-    url='https://github.com/dpgaspar/flask-appbuilder/',
+    url='https://github.com/steve12d/Flask-AppBuilder.git',
     license='BSD',
     author='Daniel Vaz Gaspar',
     author_email='danielvazgaspar@gmail.com',
     description=(
-        'Simple and rapid application development framework, built on top of Flask.'
+        'Fork of Simple and rapid application development framework, built on top of Flask.'
         ' includes detailed security, auto CRUD generation for your models,'
         ' google charts and much more.'
     ),

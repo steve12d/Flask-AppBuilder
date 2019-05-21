@@ -633,6 +633,7 @@ class AuthOAuthView(AuthView):
             log.debug("Already authenticated {0}".format(g.user))
             return redirect(self.appbuilder.get_url_for_index)
         if provider is None:
+            log.debug("No provider")
             return self.render_template(
                 self.login_template,
                 providers=self.appbuilder.sm.oauth_providers,
@@ -677,6 +678,7 @@ class AuthOAuthView(AuthView):
         resp = self.appbuilder.sm.oauth_remotes[provider].authorized_response()
         if resp is None:
             flash(u"You denied the request to sign in.", "warning")
+            log.debug("You denied the request to sign in")
             return redirect("login")
         log.debug("OAUTH Authorized resp: {0}".format(resp))
         # Retrieves specific user info from the provider
@@ -698,6 +700,7 @@ class AuthOAuthView(AuthView):
                         break
                 if not allow:
                     flash(u"You are not authorized.", "warning")
+                    log.debug("You are not authorized")
                     return redirect("login")
             else:
                 log.debug("No whitelist for OAuth provider")
@@ -707,7 +710,9 @@ class AuthOAuthView(AuthView):
             flash(as_unicode(self.invalid_login_message), "warning")
             return redirect("login")
         else:
+            log.debug("Log in using flask_login")
             login_user(user)
+            log.debug("Done logging in")
             try:
                 state = jwt.decode(
                     request.args["state"],
@@ -721,7 +726,8 @@ class AuthOAuthView(AuthView):
                 next_url = state["next"][0]
             except (KeyError, IndexError):
                 next_url = self.appbuilder.get_url_for_index
-
+            
+            log.debug("Redirecting to next_url: " + str(next_url))
             return redirect(next_url)
 
 
